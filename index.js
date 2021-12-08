@@ -36,6 +36,8 @@ client.on('message', msg => {
     });
  }
 
+ 
+
  if(msg.content.includes('-custom')){
      let sub = msg.content.split('-custom ')[1]
      console.log(sub)
