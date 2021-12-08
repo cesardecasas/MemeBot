@@ -3,6 +3,7 @@ const intents = new Intents()
 intents.add(Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES);
 const client = new Client({ intents: intents})
 const RedditImageFetcher = require("reddit-image-fetcher");
+const {SlashCommandBuilder} =require('@discordjs/builders')
 
 require('dotenv').config()
 
@@ -45,14 +46,22 @@ client.on('message', msg => {
     }).then(result => {
     
         const file = new MessageAttachment(result[0]?.image);
-    
         msg.reply({ files: [file] });
     }).catch(err=>{
         console.log(err)
-        msg.reply('invalid subreddit name ')
+        msg.reply('invalid subreddit name ') 
     })
  }
  });
+
+client.on('interactionCreate', async interaction =>{
+
+    const { commandName } = interaction
+
+    console.log(commandName)
+
+})
+
 
 
 
