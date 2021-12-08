@@ -3,7 +3,6 @@ const intents = new Intents()
 intents.add(Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES);
 const client = new Client({ intents: intents})
 const RedditImageFetcher = require("reddit-image-fetcher");
-const {SlashCommandBuilder} =require('@discordjs/builders')
 
 require('dotenv').config()
 
