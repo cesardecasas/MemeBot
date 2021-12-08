@@ -1,8 +1,11 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
+require('dotenv').config()
 
 
+
+const token = process.env.TOKEN
 
 const commands = [
 	new SlashCommandBuilder().setName('start').setDescription('Replies with pong!')

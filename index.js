@@ -11,10 +11,8 @@ require('dotenv').config()
 
 
 client.on('ready', () => {
+
  console.log(`Logged in as ${client.user.tag}!`);
- setInterval(()=>{
-    console.log(`Logged in as ${client.user.tag}!`);
- },10000)
  });
 
 client.on('message', msg => {
@@ -23,7 +21,6 @@ client.on('message', msg => {
  }
 
  if(msg.content.includes('hola') || msg.content.includes('hi')){
-     console.log(msg)
      msg.reply(`welcome ${msg.author.username}`)
      
  }
