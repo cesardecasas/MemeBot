@@ -52,6 +52,26 @@ client.on('message', msg => {
         msg.reply('invalid subreddit name ') 
     })
  }
+
+ if(msg.content === 'start memes'){
+     setInterval(()=>{
+        RedditImageFetcher.fetch({
+            type: 'meme', 
+            total:50
+        }).then(result => {
+
+            const a = result.sort((a,b)=>b.upvotes-a.upvotes)
+        
+            const file = new MessageAttachment(a[0]?.image);
+        
+            msg.reply({ files: [file] });
+        });
+     },600000)
+ }
+
+ if(msg.content === 'stop memes'){
+     clearInterval()
+ }
  });
 
 client.on('interactionCreate', async interaction =>{
@@ -61,6 +81,8 @@ client.on('interactionCreate', async interaction =>{
     console.log(commandName)
 
 })
+
+
 
 
 
