@@ -1,0 +1,1 @@
+worker: nodde index.js
