@@ -1,0 +1,135 @@
+{
+    type: 2,
+    id: '1136881702946492447',
+    applicationId: '917846614259941376',
+    channelId: '917849503728533528',
+    guildId: '917849503728533524',
+    user: User {
+      id: '398567324082372619',
+      bot: false,
+      system: false,
+      flags: UserFlagsBitField { bitfield: 0
+        },
+      username: 'csrxfire',
+      globalName: 'csrXfire',
+      discriminator: '0',
+      avatar: 'd94253f006776f5b0c768bc42af3e05c',
+      banner: undefined,
+      accentColor: undefined,
+      avatarDecoration: null
+    },
+    member: GuildMember {
+      guild: Guild {
+        id: '917849503728533524',
+        name: 'test server',
+        icon: 'd10d58eebf35f8e32ba3cbfce657de68',
+        features: [],
+        commands: [GuildApplicationCommandManager
+            ],
+        members: [GuildMemberManager
+            ],
+        channels: [GuildChannelManager
+            ],
+        bans: [GuildBanManager
+            ],
+        roles: [RoleManager
+            ],
+        presences: PresenceManager {},
+        voiceStates: [VoiceStateManager
+            ],
+        stageInstances: [StageInstanceManager
+            ],
+        invites: [GuildInviteManager
+            ],
+        scheduledEvents: [GuildScheduledEventManager
+            ],
+        autoModerationRules: [AutoModerationRuleManager
+            ],
+        available: true,
+        shardId: 0,
+        splash: null,
+        banner: null,
+        description: null,
+        verificationLevel: 0,
+        vanityURLCode: null,
+        nsfwLevel: 0,
+        premiumSubscriptionCount: 0,
+        discoverySplash: null,
+        memberCount: 2,
+        large: false,
+        premiumProgressBarEnabled: false,
+        applicationId: null,
+        afkTimeout: 300,
+        afkChannelId: null,
+        systemChannelId: '917849503728533528',
+        premiumTier: 0,
+        widgetEnabled: null,
+        widgetChannelId: null,
+        explicitContentFilter: 0,
+        mfaLevel: 0,
+        joinedTimestamp: 1638911783057,
+        defaultMessageNotifications: 0,
+        systemChannelFlags: [SystemChannelFlagsBitField
+            ],
+        maximumMembers: 500000,
+        maximumPresences: null,
+        maxVideoChannelUsers: 25,
+        maxStageVideoChannelUsers: 50,
+        approximateMemberCount: null,
+        approximatePresenceCount: null,
+        vanityURLUses: null,
+        rulesChannelId: null,
+        publicUpdatesChannelId: null,
+        preferredLocale: 'en-US',
+        safetyAlertsChannelId: null,
+        ownerId: '398567324082372619',
+        emojis: [GuildEmojiManager
+            ],
+        stickers: [GuildStickerManager
+            ]
+        },
+      joinedTimestamp: 1638902774558,
+      premiumSinceTimestamp: null,
+      nickname: null,
+      pending: false,
+      communicationDisabledUntilTimestamp: null,
+      user: User {
+        id: '398567324082372619',
+        bot: false,
+        system: false,
+        flags: [UserFlagsBitField
+            ],
+        username: 'csrxfire',
+        globalName: 'csrXfire',
+        discriminator: '0',
+        avatar: 'd94253f006776f5b0c768bc42af3e05c',
+        banner: undefined,
+        accentColor: undefined,
+        avatarDecoration: null
+        },
+      avatar: null,
+      flags: GuildMemberFlagsBitField { bitfield: 0
+        }
+    },
+    version: 1,
+    appPermissions: PermissionsBitField { bitfield: 278165808741953n
+    },
+    memberPermissions: PermissionsBitField { bitfield: 281474976710655n
+    },
+    locale: 'en-US',
+    guildLocale: 'en-US',
+    commandId: '1136852121099173981',
+    commandName: 'user',
+    commandType: 1,
+    commandGuildId: null,
+    deferred: false,
+    replied: false,
+    ephemeral: null,
+    webhook: InteractionWebhook { id: '917846614259941376'
+    },
+    options: CommandInteractionOptionResolver {
+      _group: null,
+      _subcommand: null,
+      _hoistedOptions: []
+    }
+}

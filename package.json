@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "worker":"node index.js"
-
+    "start": "node deploy-commands.js && nodemon index.js",
+    "worker": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -16,18 +15,28 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "engines": {"node": "17.2.0"},
+  "engines": {
+    "node": "17.2.0"
+  },
   "bugs": {
     "url": "https://github.com/cesardecasas/MemeBot/issues"
   },
   "homepage": "https://github.com/cesardecasas/MemeBot#readme",
   "dependencies": {
     "@discordjs/builders": "^0.8.2",
+    "@discordjs/opus": "^0.9.0",
     "@discordjs/rest": "^0.1.0-canary.0",
+    "@discordjs/voice": "^0.16.0",
     "discord-api-types": "^0.24.0",
-    "discord.js": "^13.3.1",
+    "discord.js": "^14.12.1",
     "dotenv": "^10.0.0",
+    "libsodium-wrappers": "^0.7.11",
     "nodemon": "^2.0.15",
-    "reddit-image-fetcher": "^2.0.9"
+    "reddit-image-fetcher": "^2.0.9",
+    "yt-search": "^2.10.4",
+    "ytdl-core": "^4.11.5"
+  },
+  "devDependencies": {
+    "eslint": "^8.46.0"
   }
 }

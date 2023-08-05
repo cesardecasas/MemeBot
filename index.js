@@ -1,92 +1,59 @@
-const {Client, Intents, MessageAttachment } = require('discord.js');
-const intents = new Intents()
-intents.add(Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES);
-const client = new Client({ intents: intents})
-const RedditImageFetcher = require("reddit-image-fetcher");
-
-require('dotenv').config()
-
- const Token = process.env.TOKEN
+const { Client, Events, GatewayIntentBits, Collection } = require('discord.js')
+const Token = process.env.TOKEN
+const fs = require('node:fs');
+const path = require('node:path');
 
 
+// Create a new client instance
+const client = new Client({
+    intents: [GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildVoiceStates,]
+});
 
-client.on('ready', () => {
+client.commands = new Collection();
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
- console.log(`Logged in as ${client.user.tag}!`);
- });
+for (const file of commandFiles) {
+    const filePath = path.join(commandsPath, file);
+    const command = require(filePath);
+    // Set a new item in the Collection with the key as the command name and the value as the exported module
+    if ('data' in command && 'execute' in command) {
+        client.commands.set(command.data.name, command);
+    } else {
+        console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" propey.`);
+    }
+}
 
-client.on('message', msg => {
- if (msg.content === 'ping') {
- msg.reply('pong');
- }
+// When the client is ready, run this code (only once)
+// We use 'c' for the event parameter to keep it separate from the already defined 'client'
+client.once(Events.ClientReady, c => {
+    console.log(`Ready! Logged in as ${c.user.tag}`);
+});
 
- if(msg.content.includes('hola') || msg.content.includes('hi')){
-     msg.reply(`welcome ${msg.author.username}`)
-     
- }
-
- if(msg.content === '-meme'){
-    RedditImageFetcher.fetch({
-        type: 'meme'
-    }).then(result => {
-    
-        const file = new MessageAttachment(result[0]?.image);
-    
-        msg.reply({ files: [file] });
-    });
- }
-
- 
-
- if(msg.content.includes('-custom')){
-     let sub = msg.content.split('-custom ')[1]
-     console.log(sub)
-     RedditImageFetcher.fetch({
-        type: 'custom',
-        subreddit: [`${sub}`]
-    }).then(result => {
-    
-        const file = new MessageAttachment(result[0]?.image);
-        msg.reply({ files: [file] });
-    }).catch(err=>{
-        console.log(err)
-        msg.reply('invalid subreddit name ') 
-    })
- }
-
- if(msg.content === 'start memes'){
-     setInterval(()=>{
-        RedditImageFetcher.fetch({
-            type: 'meme', 
-            total:50
-        }).then(result => {
-
-            const a = result.sort((a,b)=>b.upvotes-a.upvotes)
-        
-            const file = new MessageAttachment(a[0]?.image);
-        
-            msg.reply({ files: [file] });
-        });
-     },600000)
- }
-
- if(msg.content === 'stop memes'){
-     clearInterval()
- }
- });
-
-client.on('interactionCreate', async interaction =>{
-
-    const { commandName } = interaction
-
-    console.log(commandName)
-
-})
+client.on(Events.InteractionCreate, async interaction => {
+    if (!interaction.isChatInputCommand()) return;
 
 
+    const command = interaction.client.commands.get(interaction.commandName);
 
+    if (!command) {
+        console.error(`No command matching ${interaction.commandName} was found.`);
+        return;
+    }
 
-
-
+    try {
+        const queue = new Map();
+        await command.execute(interaction, queue);
+    } catch (error) {
+        console.error(error);
+        if (interaction.replied || interaction.deferred) {
+            await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+        } else {
+            await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+        }
+    }
+});
 
 client.login(Token);
