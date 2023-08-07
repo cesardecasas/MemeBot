@@ -15,31 +15,7 @@ module.exports = {
     async execute(interaction, queue) {
         // interaction.guild is the object representing the Guild in which the command was run
 
-        const playSong = (guild, song, queue) => {
-            const serverQueue = queue.get(guild.id);
-            if (!song) {
-                serverQueue.voiceChannel.leave();
-                queue.delete(guild.id);
-                return;
-            }
-            const ytSong = ytdl(song.url)
-            console.log(ytSong)
-            const resource = createAudioResource(ytSong, { inlineVolume: true });
-            console.log(resource)
-            const player = createAudioPlayer();
-            player.volume = 0.8;
-            player.play(resource);
 
-            player.on('finish', () => {
-                serverQueue.songs.shift();
-                playSong(guild, serverQueue.songs[0]);
-            });
-            serverQueue.connection.subscribe(player);
-            serverQueue.playing = true;
-
-
-            serverQueue.voiceChannel.send(`Now playing: **${song.title}**`);
-        }
 
         const voiceChannel = interaction.member.voice.channel;
         if (!voiceChannel) {
@@ -83,7 +59,9 @@ module.exports = {
                     adapterCreator: voiceChannel.guild.voiceAdapterCreator,
                 });
                 queueContruct.connection = connection;
-                playSong(interaction.guild, queueContruct.songs[0], queue);
+                const player = await playSong(interaction, interaction.guild, queueContruct.songs[0], queue);
+                queueContruct.connection.subscribe(player)
+                console.log(queueContruct.connection.state)
             } catch (err) {
                 console.error('Error connecting to the voice channel:', err);
                 queue.delete(interaction.guild.id);
@@ -93,7 +71,65 @@ module.exports = {
             serverQueue.songs.push(song);
             return interaction.channel.send(`${song.title} has been added to the queue!`);
         }
-
-        return await interaction.channel.send(`${songName} has been added to the queue!`);
     },
 };
+
+const playSong = async (interaction, guild, song, queue) => {
+    const serverQueue = queue.get(guild.id);
+    if (!song) {
+        serverQueue.voiceChannel.leave();
+        queue.delete(guild.id);
+        return;
+    }
+    const ytSong = ytdl(song.url)
+
+    const resource = createAudioResource(ytSong, { inlineVolume: true });
+
+    // const resource = createAudioResource('./porta.mp3', { inlineVolume: true });
+
+    const player = createAudioPlayer();
+    player.volume = 0.8;
+    player.play(resource);
+
+    player.on('finish', () => {
+        console.log('finished')
+        serverQueue.songs.shift();
+        playSong(guild, serverQueue.songs[0]);
+    });
+
+
+    player.on('error', (error) => {
+        console.error('Audio player error:', error);
+    });
+
+
+    await new Promise((res, rej) => {
+        serverQueue.connection.on('stateChange', (state) => {
+            switch (state.status) {
+                case 'ready':
+                    res()
+                    break;
+                case 'failed':
+                    rej()
+                    break;
+
+                case 'signalling':
+                    console.log('signalling')
+                    break;
+                case 'connecting':
+                    if (serverQueue.connection.state.status === "ready") {
+                        console.log('ready')
+                        res()
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        });
+    })
+    serverQueue.playing = true;
+    await interaction.channel.send(`Now playing: **${song.title}**`);
+    return player
+
+}

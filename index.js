@@ -26,12 +26,10 @@ for (const file of commandFiles) {
     }
 }
 
-// When the client is ready, run this code (only once)
-// We use 'c' for the event parameter to keep it separate from the already defined 'client'
 client.once(Events.ClientReady, c => {
     console.log(`Ready! Logged in as ${c.user.tag}`);
 });
-
+const queue = new Map();
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return;
 
@@ -42,9 +40,7 @@ client.on(Events.InteractionCreate, async interaction => {
         console.error(`No command matching ${interaction.commandName} was found.`);
         return;
     }
-
     try {
-        const queue = new Map();
         await command.execute(interaction, queue);
     } catch (error) {
         console.error(error);
